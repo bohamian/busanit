@@ -9,9 +9,14 @@
         path: /etc/ansible/hosts
         block: |
           [CentOS]
-          192.168.1.11
-          192.168.1.12
-          192.168.1.13
+          192.168.56.11
+          192.168.56.12
+          192.168.56.13
+
+    - name: Install sshpass for Authentication
+      yum:
+        name: sshpass
+        state: present      
   
     - name: Create vim env's directories & files
       shell: "{{ item }}"
