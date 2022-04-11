@@ -9,7 +9,7 @@
       # yum: name=epel-release state=latest와 동일
       action: "{{ ansible_pkg_mgr }} name=epel-release state=latest"
       when: ansible_distribution == 'CentOS'
-       
+
     - name: install nginx web server for CentOS
       # yum: name=nginx state=present와 동일
       action: "{{ ansible_pkg_mgr }} name=nginx state=present"
@@ -18,17 +18,13 @@
     - name: upload default index.html for web server
       get_url: url=https://www.nginx.com dest=/usr/share/nginx/html/ mode=0644
       when: ansible_distribution == 'CentOS'
-<<<<<<< HEAD:01-ansible/08-when/yaml/nginx_install_w_when.yml
-
-=======
-	  
->>>>>>> 4c592e7739694d7adaa92562ff3d335ee98667a1:01-ansible/yaml/nginx_install_w_when.yml
+      
       # when을 이용해서 Ubuntu에 nginx를 설치
     - name: start nginx web server
       # apt: name=nginx state=present update_cache=yes와 동일
       service: name=nginx state=started
       when: ansible_distribution == 'CentOS'
-        
+
     - name: install nginx web server for Ubuntu
       action: "{{ ansible_pkg_mgr }} name=nginx state=present update_cache=yes"
       when: ansible_distribution == 'Ubuntu'
