@@ -1,0 +1,33 @@
+---
+- name: Install nginx
+  hosts: nodes
+  gather_facts: no
+  become: yes
+  
+  tasks:
+    - name: Touch "/etc/yum.repos.d/nginx.repo"
+      file:
+        path: /etc/yum.repos.d/nginx.repo
+        state: touch
+        owner: root
+        group: root
+        mode: 0644
+
+    - name: Add "/etc/yum.repos.d/nginx.repo"
+      blockinfile: 
+        path: /etc/yum.repos.d/nginx.repo
+        block: |
+          [nginx]
+          name=nginx repo
+          baseurl=http://nginx.org/packages/mainline/centos/7/$basearch/
+          gpgcheck=0
+          enabled=1
+
+    - name: install epel-release
+      yum: name=epel-release state=latest
+    - name: install nginx web server
+      yum: name=nginx state=present
+    - name: upload default index.html for web server
+      get_url: url=https://www.nginx.com dest=/usr/share/nginx/html/ mode=0644
+    - name: start nginx web server
+      service: name=nginx state=started
